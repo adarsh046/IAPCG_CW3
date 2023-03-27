@@ -279,6 +279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f1952a6532bf444afec7ad77f1da0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cavesColour: {r: 1, g: 0.53205127, b: 0, a: 1}
+  waterColour: {r: 0.009569168, g: 0, b: 1, a: 1}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

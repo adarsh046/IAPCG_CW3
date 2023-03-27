@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Mesh_Generator : MonoBehaviour
 {
+    public Color cavesColour;
+    public Color waterColour;
+
     public class intermediateNode
     {
         public Vector3 position;
@@ -94,30 +97,30 @@ public class Mesh_Generator : MonoBehaviour
                 for (int j = 0; j < sqG.varSquare.GetLength(1); ++j)
                 {
                     if(sqG.varSquare[i, j].topLeft.isActive)
-                        Gizmos.color = Color.black;
+                        Gizmos.color = cavesColour;
                     else
-                        Gizmos.color = Color.blue;
+                        Gizmos.color = waterColour;
                     Gizmos.DrawCube(sqG.varSquare[i, j].topLeft.position, Vector3.one * 0.4f);
 
                     if (sqG.varSquare[i, j].topRight.isActive)
-                        Gizmos.color = Color.black;
+                        Gizmos.color = cavesColour;
                     else
-                        Gizmos.color = Color.blue;
+                        Gizmos.color = waterColour;
                     Gizmos.DrawCube(sqG.varSquare[i, j].topRight.position, Vector3.one * 0.4f);
 
                     if (sqG.varSquare[i, j].bottomLeft.isActive)
-                        Gizmos.color = Color.black;
+                        Gizmos.color = cavesColour;
                     else
-                        Gizmos.color = Color.blue;
+                        Gizmos.color = waterColour;
                     Gizmos.DrawCube(sqG.varSquare[i, j].bottomLeft.position, Vector3.one * 0.4f);
 
                     if (sqG.varSquare[i, j].topRight.isActive)
-                        Gizmos.color = Color.black;
+                        Gizmos.color = cavesColour;
                     else
-                        Gizmos.color = Color.blue;
+                        Gizmos.color = waterColour;
                     Gizmos.DrawCube(sqG.varSquare[i, j].topRight.position, Vector3.one * 0.4f);
 
-                    Gizmos.color = Color.grey;
+                    Gizmos.color = Color.black;
                     Gizmos.DrawCube(sqG.varSquare[i, j].centerTop.position, Vector3.one * 0.1f);
                     Gizmos.DrawCube(sqG.varSquare[i, j].centerBottom.position, Vector3.one * 0.1f);
                     Gizmos.DrawCube(sqG.varSquare[i, j].centerLeft.position, Vector3.one * 0.1f);
