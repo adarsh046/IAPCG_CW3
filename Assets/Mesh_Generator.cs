@@ -291,4 +291,5 @@ public class Mesh_Generator : MonoBehaviour
         if(points.Length>=6)
             createTriagnle(points[0], points[4], points[5]);
     }
+
 }
