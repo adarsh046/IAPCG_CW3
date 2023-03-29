@@ -114,9 +114,25 @@ public class Level_Generator : MonoBehaviour
             levelSmooth();
         }
 
-        //Calling mesh generator from "Mesh_Generator" script
-        Mesh_Generator genMesh = GetComponent<Mesh_Generator>();
-        genMesh.meshGenerate(level, 1);   
+        int levelBorderSize = 1;
+        int[,] levelBorder = new int[tileWidth + levelBorderSize * 2, tileHeight + levelBorderSize * 2];
+        for (int x = 0; x < levelBorder.GetLength(0); ++x)
+        {
+            for (int y = 0; y < levelBorder.GetLength(1); ++y)
+            {
+                if(x >= levelBorderSize && x < tileWidth + levelBorderSize && y >= levelBorderSize && y < tileHeight + levelBorderSize)
+                {
+                    levelBorder[x, y] = level[x-levelBorderSize, y-levelBorderSize];
+                }
+                else
+                {
+                    levelBorder[x,y] = 1;
+                }
+            }
+        }
+                //Calling mesh generator from "Mesh_Generator" script
+                Mesh_Generator genMesh = GetComponent<Mesh_Generator>();
+        genMesh.meshGenerate(levelBorder, 1);   
     }
 
     /*void OnDrawGizmos()
