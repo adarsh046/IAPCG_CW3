@@ -64,6 +64,7 @@ public class Mesh_Generator : MonoBehaviour
     }
 
     public squareGrid sqG;
+    public MeshFilter cave;
     public void meshGenerate(int[,] level, float squareSize)
     {
         outlines.Clear();
@@ -85,18 +86,47 @@ public class Mesh_Generator : MonoBehaviour
 
         //Setting up the mesh filter and renderer
         Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        cave.mesh = mesh;
+
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
         createWallMesh();
+        //generateColliders();
+    }
+
+    void generateColliders()
+    {
+        EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>(); 
+        for(int i=0; i<currentColliders.Length; ++i)
+        {
+            Destroy(currentColliders[i]);
+        }
+        calculateMeshOutlines();
+        foreach(List<int> outline in outlines)
+        {
+            EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
+            Vector2[] edgePoints = new Vector2[outline.Count];
+
+            for (int i = 0; i < outline.Count; ++i)
+            {
+                edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].y);
+            }
+
+            edgeCollider.points = edgePoints;
+        }
     }
 
     public MeshFilter walls;
 
     void createWallMesh()
     {
+        MeshCollider[] currentColliders = walls.gameObject.GetComponents<MeshCollider>();
+        for (int i = 0; i < currentColliders.Length; ++i)
+        {
+            Destroy(currentColliders[i]);
+        }
         calculateMeshOutlines();
 
         List<Vector3> wallVertices = new List<Vector3>();
@@ -127,6 +157,9 @@ public class Mesh_Generator : MonoBehaviour
         wallMesh.vertices = wallVertices.ToArray();
         wallMesh.triangles = wallTriangles.ToArray();
         walls.mesh = wallMesh;
+
+        MeshCollider wallCollider = walls.gameObject.AddComponent<MeshCollider>();
+        wallCollider.sharedMesh = wallMesh;
     }
 
     public class squareGrid
