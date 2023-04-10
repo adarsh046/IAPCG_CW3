@@ -130,8 +130,8 @@ public class Level_Generator : MonoBehaviour
                 }
             }
         }
-                //Calling mesh generator from "Mesh_Generator" script
-                Mesh_Generator genMesh = GetComponent<Mesh_Generator>();
+        //Calling mesh generator from "Mesh_Generator" script
+        Mesh_Generator genMesh = GetComponent<Mesh_Generator>();
         genMesh.meshGenerate(levelBorder, 1);   
     }
 
