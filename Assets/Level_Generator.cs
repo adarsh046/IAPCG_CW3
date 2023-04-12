@@ -3,61 +3,54 @@ using UnityEngine;
 
 public class Level_Generator : MonoBehaviour
 {
-    public int tileWidth;
-    public int tileHeight;
-    [Range(0, 100)]
-    public int fillPercentRandom;
-    public string SpecificSeed;
-    public bool useRandomSeed;
-
     int[,] level;
+    public GameObject caveWalls;
+    public int wallWidth;
+    public int wallHeight;
+    public int fillPercent;
+    public int smoothIterations;
+    public int cellularAutomataNumber;
+    public string randomSeed;
 
-    private void Start()
+    static int[,] createLevel(int tileWidth, int tileHeight, string randomSeed, int fillPercent)
     {
-        generateLevel();
-    }
 
-    private void Update()
-    {
-        //Generate new level on each left mouse click
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log("Mouse clicked");
-            generateLevel();
-        }
-    }
-
-    void fillLevelRandomly()
-    {
         //Give random seed to generate different levels
-        //Same seed == same level
-        if (useRandomSeed)
-            SpecificSeed = Time.time.ToString(); //Generate random seed
-        System.Random random = new System.Random(SpecificSeed.GetHashCode()); //Converting seed to a number
+        //Same seed = same level
+        randomSeed = Time.time.ToString(); //Generate random seed
+        System.Random random = new System.Random(randomSeed.GetHashCode()); //Converting seed to a number
 
-        for (int x = 0; x < tileWidth; ++x)
+        // Initilising the level
+        int[,] level = new int[tileWidth, tileHeight];
+
+        // For every x point
+        for (int x = 0; x < level.GetUpperBound(0); ++x)
         {
-            for (int y = 0; y < tileHeight; ++y)
+            // For every y point
+            for (int y = 0; y < level.GetUpperBound(1); ++y)
             {
                 //To make the boundaries of the level as a cave and not water
-                if (x == 0 || x == tileWidth - 1 || y == 0 || y == tileHeight - 1)
+                if (x == 0 || x == level.GetUpperBound(0) - 1 || y == 0 || y == level.GetUpperBound(1) - 1)
                 {
+                    // This cell is on the edge, therefore it has to be a wall
                     level[x, y] = 1;
                 }
                 else
                 {
-                    level[x, y] = random.Next(0, 100);
+                    // This cell is not on the edge, so it may or may not be water
+                    // Randomly generate the grid
                     //if this random value is less than our fillpercent's value then make a wall else water
-                    if (level[x, y] <= fillPercentRandom)
+                    if (random.Next(0, 100) <= fillPercent)
                         level[x, y] = 1;
                     else
                         level[x, y] = 0;
                 }
             }
         }
+        return level;
     }
 
-    int getNeighbourWallCount(int tilex, int tiley)
+    static int getNeighbourWallCount(int[,] level, int tilex, int tiley)
     {
         int neighbourWallCount = 0;
         //Iterate on a 3x3 tile grid, which is centered on the tile "x" and tile "y"
@@ -66,93 +59,98 @@ public class Level_Generator : MonoBehaviour
             for (int neighbourTiley = tiley - 1; neighbourTiley <= tiley + 1; ++neighbourTiley)
             {
                 //Inside the level
-                if (neighbourTilex >= 0 && neighbourTilex < tileWidth && neighbourTiley >= 0 && neighbourTiley < tileHeight)
+                if (neighbourTilex >= 0 && neighbourTilex < level.GetUpperBound(0) && neighbourTiley >= 0 && neighbourTiley < level.GetUpperBound(1))
                 {
-                    //On the current tile of "x" and "y"
+                    //On the current tile of "x" and "y", we do not want to count that
                     if ((neighbourTilex != tilex || neighbourTiley != tiley))
                     {
                         neighbourWallCount += level[neighbourTilex, neighbourTiley];
                     }
-                }
-                //On the edge tile of the level
-                else
-                {
-                    ++neighbourWallCount;
                 }
             }
         }
         return neighbourWallCount;
     }
 
-    void levelSmooth()
+    static int[,] cellularAutomata(int[,] level, int smoothIterations, int cellularAutomataNumber)
     {
-        for (int x = 0; x < tileWidth; ++x)
+        // This loops everything depending on the number of times we choose to smooth
+        for (int i = 0; i < smoothIterations; i++)
         {
-            for (int y = 0; y < tileHeight; ++y)
+            // For every cell
+            for (int x = 0; x < level.GetUpperBound(0); ++x)
             {
-                int neighbourWallCount = getNeighbourWallCount(x, y);
-                //Rules for cellular automata, level generation
-                if (neighbourWallCount > 4)
+                for (int y = 0; y < level.GetUpperBound(1); ++y)
                 {
-                    level[x, y] = 1;
-                }
-                else if (neighbourWallCount < 4)
-                {
-                    level[x, y] = 0;
+                    // We get the number of surrounding tiles
+                    int surroundingTiles = getNeighbourWallCount(level, x, y);
+
+                    // If the tile we are looking is at the edge
+                    if (x == 0 || x == level.GetUpperBound(0) - 1 || y == 0 || y == level.GetUpperBound(1) - 1)
+                    {
+                        level[x, y] = 1;
+                    }
+
+                    // If not, the number of surrounding tiles is greater than the threshold
+                    // Rules for cellular automata, level generation
+                    else if (surroundingTiles > cellularAutomataNumber)
+                    {
+                        // The cell becomes a wall
+                        level[x, y] = 1;
+                    }
+                    // Else, if less than threshold
+                    else if (surroundingTiles < cellularAutomataNumber)
+                    {
+                        // The will not be a wall
+                        level[x, y] = 0;
+                    }
                 }
             }
         }
+        // Return the modified map
+        return level;
     }
 
     private void generateLevel()
     {
-        level = new int[tileWidth, tileHeight];
-        fillLevelRandomly();
-        //Level smoothening iteration
-        for(int i=0; i < 5; ++i)
+        // Clear out any walls that are in the level already
+        GameObject[] caves = GameObject.FindGameObjectsWithTag("Cave");
+        foreach (GameObject i in caves)
         {
-            levelSmooth();
+            GameObject.Destroy(i);
         }
 
-        int levelBorderSize = 1;
-        int[,] levelBorder = new int[tileWidth + levelBorderSize * 2, tileHeight + levelBorderSize * 2];
-        for (int x = 0; x < levelBorder.GetLength(0); ++x)
+        //Level smoothening iteration
+        level = createLevel(wallWidth, wallHeight, randomSeed, fillPercent);
+
+        level = cellularAutomata(level, smoothIterations, cellularAutomataNumber);
+
+        for (int x = 0; x < level.GetUpperBound(0); ++x)
         {
-            for (int y = 0; y < levelBorder.GetLength(1); ++y)
+            for (int y = 0; y < level.GetUpperBound(1); ++y)
             {
-                if(x >= levelBorderSize && x < tileWidth + levelBorderSize && y >= levelBorderSize && y < tileHeight + levelBorderSize)
+                // Cell is a wall, create a wall gameobject
+                if (level[x, y] == 1)
                 {
-                    levelBorder[x, y] = level[x-levelBorderSize, y-levelBorderSize];
-                }
-                else
-                {
-                    levelBorder[x,y] = 1;
+                    Instantiate(caveWalls, new Vector3(x, 0f, y), Quaternion.identity);
                 }
             }
         }
-        //Calling mesh generator from "Mesh_Generator" script
-        Mesh_Generator genMesh = GetComponent<Mesh_Generator>();
-        genMesh.meshGenerate(levelBorder, 1);   
     }
 
-    /*void OnDrawGizmos()
+    private void Start()
     {
-        //Draw the caves and water
-        if (level != null)
+        generateLevel();
+    }
+
+    private void Update()
+    {
+        //Generate a new level on each left mouse click
+        if (Input.GetMouseButtonDown(0))
         {
-            for (int x = 0; x < tileWidth; ++x)
-            {
-                for (int y = 0; y < tileHeight; ++y)
-                {
-                    if (level[x, y] == 1)
-                        Gizmos.color = Color.grey;
-                    else
-                        Gizmos.color = Color.cyan;
-                    //Giving the center position of the level/gizmos in the scene
-                    Vector3 position = new Vector3((-tileWidth * 0.5f) + x + 0.5f, 0, (-tileHeight * 0.5f) + y + 0.5f);
-                    Gizmos.DrawCube(position, Vector3.one);
-                }
-            }
+            //Debug.Log("Mouse clicked");
+            generateLevel();
         }
-    }*/
+    }
+
 }
