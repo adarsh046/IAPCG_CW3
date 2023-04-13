@@ -20,26 +20,26 @@ public class Level_Generator : MonoBehaviour
         randomSeed = Time.time.ToString(); //Generate random seed
         System.Random random = new System.Random(randomSeed.GetHashCode()); //Converting seed to a number
 
-        // Initilising the level
+        // Initialising the level
         int[,] level = new int[tileWidth, tileHeight];
 
-        // For every x point
+        // For every x point coordinate
         for (int x = 0; x < level.GetUpperBound(0); ++x)
         {
-            // For every y point
+            // For every y point coordinate
             for (int y = 0; y < level.GetUpperBound(1); ++y)
             {
                 //To make the boundaries of the level as a cave and not water
                 if (x == 0 || x == level.GetUpperBound(0) - 1 || y == 0 || y == level.GetUpperBound(1) - 1)
                 {
-                    // This cell is on the edge, therefore it has to be a wall
+                    // This tile is on the edge, it has to be a cave wall
                     level[x, y] = 1;
                 }
                 else
                 {
-                    // This cell is not on the edge, so it may or may not be water
-                    // Randomly generate the grid
-                    //if this random value is less than our fillpercent's value then make a wall else water
+                    // This tile is not on the edge, so it may or may not be water
+                    // Randomly generate the tile of the level
+                    // If this random value is less than or equal to our fillpercent's value then make a cave wall else water
                     if (random.Next(0, 100) <= fillPercent)
                         level[x, y] = 1;
                     else
@@ -77,7 +77,7 @@ public class Level_Generator : MonoBehaviour
         // This loops everything depending on the number of times we choose to smooth
         for (int i = 0; i < smoothIterations; i++)
         {
-            // For every cell
+            // For every tile
             for (int x = 0; x < level.GetUpperBound(0); ++x)
             {
                 for (int y = 0; y < level.GetUpperBound(1); ++y)
@@ -91,17 +91,17 @@ public class Level_Generator : MonoBehaviour
                         level[x, y] = 1;
                     }
 
-                    // If not, the number of surrounding tiles is greater than the threshold
+                    // If not at the edge, the number of surrounding tiles is greater than the cellular automata number
                     // Rules for cellular automata, level generation
                     else if (surroundingTiles > cellularAutomataNumber)
                     {
-                        // The cell becomes a wall
+                        // The tile becomes a cave wall
                         level[x, y] = 1;
                     }
-                    // Else, if less than threshold
+                    // Else, less than cellular automata number
                     else if (surroundingTiles < cellularAutomataNumber)
                     {
-                        // The will not be a wall
+                        // The will be water
                         level[x, y] = 0;
                     }
                 }
@@ -113,26 +113,25 @@ public class Level_Generator : MonoBehaviour
 
     private void generateLevel()
     {
-        // Clear out any walls that are in the level already
-        GameObject[] caves = GameObject.FindGameObjectsWithTag("Cave");
-        foreach (GameObject i in caves)
+        // Clear out any cave walls that are in the level already
+        foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Cave"))
         {
-            GameObject.Destroy(i);
+            Destroy(wall);
         }
 
-        //Level smoothening iteration
+        // Level create
         level = createLevel(wallWidth, wallHeight, randomSeed, fillPercent);
-
+        // Level cellular automata 
         level = cellularAutomata(level, smoothIterations, cellularAutomataNumber);
 
         for (int x = 0; x < level.GetUpperBound(0); ++x)
         {
             for (int y = 0; y < level.GetUpperBound(1); ++y)
             {
-                // Cell is a wall, create a wall gameobject
+                // Tile is a wall, create a cave wall gameobject
                 if (level[x, y] == 1)
                 {
-                    Instantiate(caveWalls, new Vector3(x, 0f, y), Quaternion.identity);
+                    Instantiate(caveWalls, new Vector3(x, 0f, y), Quaternion.Euler(Vector3.zero));
                 }
             }
         }
