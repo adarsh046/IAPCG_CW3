@@ -5,11 +5,11 @@ namespace UnityMovementAI
     [RequireComponent(typeof(MovementAIRigidbody))]
     public class Flee : MonoBehaviour
     {
-        public float panicDist = 10f;
+        public float panicDist = 20f;
 
         public bool decelerateOnStop = true;
 
-        public float maxAcceleration = 10f;
+        public float maxAcceleration = 20f;
 
         public float timeToTarget = 0.1f;
 
