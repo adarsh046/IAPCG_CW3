@@ -5,7 +5,7 @@ namespace UnityMovementAI
     [RequireComponent(typeof(MovementAIRigidbody))]
     public class Flee : MonoBehaviour
     {
-        public float panicDist = 3.5f;
+        public float panicDist = 10f;
 
         public bool decelerateOnStop = true;
 

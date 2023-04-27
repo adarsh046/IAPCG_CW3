@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using NPBehave;
 using UnityMovementAI;
@@ -8,18 +6,20 @@ public class Behaviour_Tree_Script : MonoBehaviour
 {
 
     public Transform target;
-    private Root tree;                  // The tank's behaviour tree
-    private Blackboard blackboard;      // The tank's behaviour blackboard
-    public int m_Behaviour = 0;         // Used to select an AI behaviour in the Unity Inspector
+    private Root tree;                  // The agents' behaviour tree
+    private Blackboard blackboard;      // The agents' behaviour blackboard
+    public int behaviourNumber = 0;     // Used to select an AI behaviour in the Unity Inspector
 
     SteeringBasics steeringBasics;
     Flee flee;
+    Wander2 wander;
 
     // Start is called before the first frame update
     void Start()
     {
         steeringBasics = GetComponent<SteeringBasics>();
         flee = GetComponent<Flee>();
+        wander = GetComponent<Wander2>();
         tree = CreateBehaviourTree();
         blackboard = tree.Blackboard;
         tree.Start();
@@ -27,23 +27,14 @@ public class Behaviour_Tree_Script : MonoBehaviour
 
     private Root CreateBehaviourTree()
     {
-        // To change a tank's behaviour:
-        // - Examine the GameManager object in the inspector.
-        // - Open the Tanks list, find the tank's entry.
-        // - Enable the NPC checkbox.
-        // - Edit the Behaviour field to an integer N corresponding to the behaviour below
-        switch (m_Behaviour)
+        switch (behaviourNumber)
         {
-            // N=1
-            //case 1:
-                //return SpinBehaviour(-0.05f, 1f);
-           // case 2:
-                //return CustomFunction();
+            case 1:
+               return Seek();
+            case 2:
+                return Wander();
             case 3:
-                return CustomTracking();
-            // Default behaviour: turn slowly
-            //default:
-                //return TurnSlowly();
+                return Flee();
         }
         return null;
     }
@@ -59,98 +50,72 @@ public class Behaviour_Tree_Script : MonoBehaviour
         blackboard["targetOffCentre"] = Mathf.Abs(heading.x);
     }
 
-    //// Register an enemy target 
-    //public void AddTarget(GameObject target)
-    //{
-    //    m_Targets.Add(target);
-    //}
-
-    //// Get the transform for the first target
-    //private Transform TargetTransform()
-    //{
-    //    if (m_Targets.Count > 0)
-    //    {
-    //        return m_Targets[0].transform;
-    //    }
-    //    else
-    //    {
-    //        return null;
-    //    }
-    //}
-
-    private Root CustomTracking()
+    private Root Flee()
     {
         return new Root(
         new Service(0.5f, UpdatePerception,
             new Selector(
-               new BlackboardCondition("targetDistance", Operator.IS_SMALLER, 250.0f, Stops.IMMEDIATE_RESTART,
-               //new Sequence(
-               CustomMove()
-               //new Wait(3.0f))
-               )
-               //,
-              // new BlackboardCondition("targetOffCentre", Operator.IS_SMALLER, 0.01f, Stops.IMMEDIATE_RESTART,
-               //new Sequence(
-               //CustomMove(0.25f),
-               //RandomFire()
-               ///)),
-              // new BlackboardCondition("targetOnRight", Operator.IS_EQUAL, true, Stops.IMMEDIATE_RESTART,
-               //CustomRightTurn()
-              // ),
-               //new BlackboardCondition("targetOnRight", Operator.IS_EQUAL, false, Stops.IMMEDIATE_RESTART,
-               //CustomLeftTurn()
-               //)
-
-               )
-            ));
+               new BlackboardCondition("targetDistance", Operator.IS_SMALLER, flee.panicDist, Stops.IMMEDIATE_RESTART,
+               nodeFlee()
+               ))));
     }
 
-    private void Move()
+    private Node nodeFlee()
+    {
+        return new Action(() => fleeFunction());
+    }
+
+    private void fleeFunction()
     {
         Vector3 accel = flee.GetSteering(target.position);
+        steeringBasics.Steer(accel);
+        steeringBasics.LookWhereYoureGoing();
 
+    }
+
+    private Root Seek()
+    {
+        return new Root(
+        new Service(0.5f, UpdatePerception,
+            new Selector(
+               new BlackboardCondition("targetDistance", Operator.IS_SMALLER, 20.0f, Stops.IMMEDIATE_RESTART,
+               nodeSeek()
+               ))));
+    }
+    private void seekFunction()
+    {
+        Vector3 accel = steeringBasics.Seek(target.position);
         steeringBasics.Steer(accel);
         steeringBasics.LookWhereYoureGoing();
     }
 
-    private Node CustomMove()
+    private Node nodeSeek()
     {
-        return new Action(() => Move());
+        return new Action(() => seekFunction());
     }
 
-    private Node CustomRandomTurn()
+
+    private Root Wander()
     {
-        return null;
-        //new Action(() => Turn(UnityEngine.Random.Range(-1.0f, 1.0f)));
+        return new Root(
+        new Service(0.5f, UpdatePerception,
+            new Selector(
+               new BlackboardCondition("targetDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
+               nodeWander()),
+               new BlackboardCondition("targetDistance", Operator.IS_SMALLER, 20.0f, Stops.IMMEDIATE_RESTART,
+               nodeSeek())
+               )));
+    }
+    private void wanderFunction()
+    {
+        Vector3 accel = wander.GetSteering();
+        steeringBasics.Steer(accel);
+        steeringBasics.LookWhereYoureGoing();
     }
 
-    private Node CustomRightTurn()
+    private Node nodeWander()
     {
-        return null;
-        //new Action(() => Turn(0.25f));
+        return new Action(() => wanderFunction());
     }
 
-    private Node CustomLeftTurn()
-    {
-        return null;
-        //new Action(() => Turn(-0.25f));
-    }
-
-    private Node StopTurning()
-    {
-        return null;
-       // Action(() => Turn(0f));
-    }
-
-    private Node RandomFire()
-    {
-        return null;
-        //new Action(() => Fire(UnityEngine.Random.Range(0.2f, 1.0f)));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -13,7 +13,6 @@ public class Level_Generator : MonoBehaviour
 
     static int[,] createLevel(int levelWidth, int levelHeight, int fillPercent)
     {
-
         // Give random seed to generate different levels
         // Same seed = same level
         string randomSeed = Time.time.ToString(); //Generate random seed
