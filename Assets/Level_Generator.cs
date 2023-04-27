@@ -4,15 +4,15 @@ using UnityEngine;
 public class Level_Generator : MonoBehaviour
 {
     int[,] level;
-    public GameObject caveWalls;
-    public int wallWidth;
-    public int wallHeight;
+    public GameObject caveTiles;
+    public int levelWidth;
+    public int levelHeight;
     public int fillPercent;
     public int smoothIterations;
     public int cellularAutomataNumber;
     public string randomSeed;
 
-    static int[,] createLevel(int tileWidth, int tileHeight, string randomSeed, int fillPercent)
+    static int[,] createLevel(int levelWidth, int levelHeight, string randomSeed, int fillPercent)
     {
 
         //Give random seed to generate different levels
@@ -21,7 +21,7 @@ public class Level_Generator : MonoBehaviour
         System.Random random = new System.Random(randomSeed.GetHashCode()); //Converting seed to a number
 
         // Initialising the level
-        int[,] level = new int[tileWidth, tileHeight];
+        int[,] level = new int[levelWidth, levelHeight];
 
         // For every x point coordinate
         for (int x = 0; x < level.GetUpperBound(0); ++x)
@@ -32,14 +32,14 @@ public class Level_Generator : MonoBehaviour
                 //To make the boundaries of the level as a cave and not water
                 if (x == 0 || x == level.GetUpperBound(0) - 1 || y == 0 || y == level.GetUpperBound(1) - 1)
                 {
-                    // This tile is on the edge, it has to be a cave wall
+                    // This tile is on the edge, it has to be a cave tile
                     level[x, y] = 1;
                 }
                 else
                 {
                     // This tile is not on the edge, so it may or may not be water
                     // Randomly generate the tile of the level
-                    // If this random value is less than or equal to our fillpercent's value then make a cave wall else water
+                    // If this random value is less than or equal to our fillpercent's value then make a cave tile else water
                     if (random.Next(0, 100) <= fillPercent)
                         level[x, y] = 1;
                     else
@@ -50,9 +50,9 @@ public class Level_Generator : MonoBehaviour
         return level;
     }
 
-    static int getNeighbourWallCount(int[,] level, int tilex, int tiley)
+    static int getNeighbourTileCount(int[,] level, int tilex, int tiley)
     {
-        int neighbourWallCount = 0;
+        int neighbourTileCount = 0;
         //Iterate on a 3x3 tile grid, which is centered on the tile "x" and tile "y"
         for (int neighbourTilex = tilex - 1; neighbourTilex <= tilex + 1; ++neighbourTilex)
         {
@@ -61,15 +61,15 @@ public class Level_Generator : MonoBehaviour
                 //Inside the level
                 if (neighbourTilex >= 0 && neighbourTilex < level.GetUpperBound(0) && neighbourTiley >= 0 && neighbourTiley < level.GetUpperBound(1))
                 {
-                    //On the current tile of "x" and "y", we do not want to count that
+                    //On the current tile of "x" and "y" coordinate, we do not want to count that tile
                     if ((neighbourTilex != tilex || neighbourTiley != tiley))
                     {
-                        neighbourWallCount += level[neighbourTilex, neighbourTiley];
+                        neighbourTileCount += level[neighbourTilex, neighbourTiley];
                     }
                 }
             }
         }
-        return neighbourWallCount;
+        return neighbourTileCount;
     }
 
     static int[,] cellularAutomata(int[,] level, int smoothIterations, int cellularAutomataNumber)
@@ -83,7 +83,7 @@ public class Level_Generator : MonoBehaviour
                 for (int y = 0; y < level.GetUpperBound(1); ++y)
                 {
                     // We get the number of surrounding tiles
-                    int surroundingTiles = getNeighbourWallCount(level, x, y);
+                    int surroundingTiles = getNeighbourTileCount(level, x, y);
 
                     // If the tile we are looking is at the edge
                     if (x == 0 || x == level.GetUpperBound(0) - 1 || y == 0 || y == level.GetUpperBound(1) - 1)
@@ -95,7 +95,7 @@ public class Level_Generator : MonoBehaviour
                     // Rules for cellular automata, level generation
                     else if (surroundingTiles > cellularAutomataNumber)
                     {
-                        // The tile becomes a cave wall
+                        // The tile becomes a cave tile
                         level[x, y] = 1;
                     }
                     // Else, less than cellular automata number
@@ -113,14 +113,14 @@ public class Level_Generator : MonoBehaviour
 
     private void generateLevel()
     {
-        // Clear out any cave walls that are in the level already
-        foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Cave"))
+        // Clear out any cave tiles that are in the level already (for generating next level)
+        foreach (GameObject caveTile in GameObject.FindGameObjectsWithTag("Cave"))
         {
-            Destroy(wall);
+            Destroy(caveTile);
         }
 
         // Level create
-        level = createLevel(wallWidth, wallHeight, randomSeed, fillPercent);
+        level = createLevel(levelWidth, levelHeight, randomSeed, fillPercent);
         // Level cellular automata 
         level = cellularAutomata(level, smoothIterations, cellularAutomataNumber);
 
@@ -128,10 +128,10 @@ public class Level_Generator : MonoBehaviour
         {
             for (int y = 0; y < level.GetUpperBound(1); ++y)
             {
-                // Tile is a wall, create a cave wall gameobject
+                // Tile is a cave, create a cave tile gameobject
                 if (level[x, y] == 1)
                 {
-                    Instantiate(caveWalls, new Vector3(x, 0f, y), Quaternion.Euler(Vector3.zero));
+                    Instantiate(caveTiles, new Vector3(x, 0f, y), Quaternion.Euler(Vector3.zero));
                 }
             }
         }
