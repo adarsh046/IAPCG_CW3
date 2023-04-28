@@ -40,6 +40,7 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
         Vector3 localToSharkPos = transform.InverseTransformPoint(sharkPos);
         Vector3 localToMinePos = transform.InverseTransformPoint(minePos);
         Vector3 localToMermaidPos = transform.InverseTransformPoint(mermaidPos);
+
         blackboard["treasureDistance"] = localToTreasurePos.magnitude;
         blackboard["sharkDistance"] = localToSharkPos.magnitude;
         blackboard["mineDistance"] = localToMinePos.magnitude;
@@ -64,6 +65,7 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
                new BlackboardCondition("treasureDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
                nodeWander())
                )));
+                
     }
 
     private Node sharkFlee()

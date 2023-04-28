@@ -59,7 +59,6 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
         // Teleport mermaid to some random position, so it looks like mermaid was killed by the diver
         Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         transform.position = newPosition;
-
     }
 
     private Node diverDestroy()
@@ -82,7 +81,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
 
     private void destroyMine()
     {
-        // Teleport her at the random position, so it looks like she's dead
+        // Teleport mermaid at some random position, so it looks like she's dead
         Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         transform.position = newPosition;
 
