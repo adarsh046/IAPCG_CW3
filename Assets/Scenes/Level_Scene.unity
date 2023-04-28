@@ -352,7 +352,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685216488}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 30.4, y: 0.3, z: 108.4}
+  m_LocalPosition: {x: 36.5, y: 0.6, z: 106.4}
   m_LocalScale: {x: 1.71, y: 1.71, z: 1.71}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f58141e9f357e448fd2fa6f1afc1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 5
+  maxVelocity: 7
   maxAcceleration: 15
   turnSpeed: 30
   targetRadius: 0.005
@@ -505,8 +505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5943b3ef333d3b45b456e9a8ce26d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 1.2
-  wanderDistance: 2
+  wanderRadius: 5
+  wanderDistance: 5
   wanderJitter: 40
 --- !u!114 &685216504
 MonoBehaviour:
@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cdf64bcab4d4d8468c92f1bc4b23f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panicDist: 20
+  panicDist: 15
   decelerateOnStop: 1
   maxAcceleration: 20
   timeToTarget: 0.1
@@ -849,7 +849,7 @@ MonoBehaviour:
   levelWidth: 81
   levelHeight: 143
   levelFillPercent: 41
-  smoothingIterations: 4
+  smoothingIterations: 3
   cellularAutomataNumber: 4
 --- !u!4 &908138235
 Transform:
@@ -1088,7 +1088,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189286442}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.6, y: 0.3, z: 24.1}
+  m_LocalPosition: {x: 58, y: 0.6, z: 27.2}
   m_LocalScale: {x: 1.71, y: 1.71, z: 1.71}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1108,7 +1108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f58141e9f357e448fd2fa6f1afc1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 5
+  maxVelocity: 7
   maxAcceleration: 15
   turnSpeed: 30
   targetRadius: 0.005
@@ -1226,8 +1226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5943b3ef333d3b45b456e9a8ce26d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 1.2
-  wanderDistance: 2
+  wanderRadius: 5
+  wanderDistance: 5
   wanderJitter: 40
 --- !u!114 &1189286456
 MonoBehaviour:
@@ -1257,7 +1257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cdf64bcab4d4d8468c92f1bc4b23f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panicDist: 20
+  panicDist: 15
   decelerateOnStop: 1
   maxAcceleration: 20
   timeToTarget: 0.1
@@ -1491,7 +1491,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735053258}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 33.8, y: 0.3, z: 70.9}
+  m_LocalPosition: {x: 51.5, y: 0.6, z: 75.2}
   m_LocalScale: {x: 1.71, y: 1.71, z: 1.71}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1609,7 +1609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f58141e9f357e448fd2fa6f1afc1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 5
+  maxVelocity: 7
   maxAcceleration: 15
   turnSpeed: 30
   targetRadius: 0.005
@@ -1643,8 +1643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5943b3ef333d3b45b456e9a8ce26d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 1.2
-  wanderDistance: 2
+  wanderRadius: 5
+  wanderDistance: 5
   wanderJitter: 40
 --- !u!1 &1955296660
 GameObject:

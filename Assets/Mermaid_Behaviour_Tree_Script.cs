@@ -45,7 +45,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
     private void destroyTreasure()
     {
         // Teleport the treasure at some random position, so it looks like mermaid is hiding the treasure
-        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
+        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         treasure.transform.position = newPosition;
     }
 
@@ -57,7 +57,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
     private void destroyDiver()
     {
         // Teleport mermaid to some random position, so it looks like mermaid was killed by the diver
-        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
+        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         transform.position = newPosition;
 
     }
@@ -83,11 +83,11 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
     private void destroyMine()
     {
         // Teleport her at the random position, so it looks like she's dead
-        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
+        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         transform.position = newPosition;
 
         // Teleport mine at some random position, so it looks like mine has exploded and changed position
-        Vector3 newMinePosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
+        Vector3 newMinePosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         mine.transform.position = newMinePosition;
     }
 
