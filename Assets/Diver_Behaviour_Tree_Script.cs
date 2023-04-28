@@ -111,7 +111,6 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
         // Teleport treasure at some random position, so it looks like diver has looted the treasure
         Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.6f, UnityEngine.Random.Range(20f, 100f));
         treasure.transform.position = newPosition;
-
     }
 
     private Node treasureDestroy()

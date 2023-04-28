@@ -11,7 +11,7 @@ public class Level_Generator : MonoBehaviour
     public int smoothingIterations;
     public int cellularAutomataNumber;
 
-    static int[,] createLevel(int levelWidth, int levelHeight, int fillPercent)
+    int[,] createLevel(int levelWidth, int levelHeight, int fillPercent)
     {
         // Give random seed to generate different levels
         // Same seed = same level
@@ -39,7 +39,7 @@ public class Level_Generator : MonoBehaviour
         return level;
     }
 
-    static int getNeighbourTileCount(int[,] level, int tilex, int tiley, int levelWidth, int levelHeight)
+    int getNeighbourTileCount(int[,] level, int tilex, int tiley, int levelWidth, int levelHeight)
     {
         int neighbourTileCount = 0;
         // Iterate on a 3x3 tile grid, which is centered on the tile "x" and tile "y"
@@ -61,7 +61,7 @@ public class Level_Generator : MonoBehaviour
         return neighbourTileCount;
     }
 
-    static int[,] cellularAutomata(int[,] level, int smoothIterations, int cellularAutomataNumber, int levelWidth, int levelHeight)
+    int[,] cellularAutomata(int[,] level, int smoothIterations, int cellularAutomataNumber, int levelWidth, int levelHeight)
     {
         // Loop to smooth the level with smoothIterations and cellularAutomataNumber
         for (int i = 0; i < smoothIterations; ++i)
@@ -71,7 +71,7 @@ public class Level_Generator : MonoBehaviour
             {
                 for (int tiley = 0; tiley < levelHeight; ++tiley)
                 {
-                    // We get the number of surrounding tiles
+                    // Get the number of surrounding tiles
                     int surroundingTiles = getNeighbourTileCount(level, tilex, tiley, levelWidth, levelHeight);
 
                     // To make the boundaries of the level as a cave and not water, checking if the tile is at the edge
@@ -101,7 +101,7 @@ public class Level_Generator : MonoBehaviour
         return level;
     }
 
-    private void generateLevel()
+    void generateLevel()
     {
         // Clear out any cave tiles that are in the level already (for generating next level)
         foreach (GameObject caveTile in GameObject.FindGameObjectsWithTag("Cave"))
@@ -128,13 +128,13 @@ public class Level_Generator : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Start()
     {
         // Generate level at the start
         generateLevel();
     }
 
-    private void Update()
+    void Update()
     {
         // Generate a new level on each left mouse click
         if (Input.GetMouseButtonDown(0))

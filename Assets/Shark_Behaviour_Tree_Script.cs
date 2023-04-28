@@ -34,7 +34,6 @@ public class Shark_Behaviour_Tree_Script : MonoBehaviour
         Vector3 localToMinePos = transform.InverseTransformPoint(minePos);
         blackboard["diverDistance"] = localToDiverPos.magnitude;
         blackboard["mineDistance"] = localToMinePos.magnitude;
-
     }
 
     private Root Shark()
