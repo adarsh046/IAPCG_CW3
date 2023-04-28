@@ -46,8 +46,6 @@ public class Shark_Behaviour_Tree_Script : MonoBehaviour
                diverDestroy()),
                new BlackboardCondition("diverDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
                diverSeek()),
-               //new BlackboardCondition("diverDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
-               //nodeWander()),
                new BlackboardCondition("mineDistance", Operator.IS_SMALLER, 2.0f, Stops.IMMEDIATE_RESTART,
                mineDestroy()),
                new BlackboardCondition("mineDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
@@ -59,13 +57,9 @@ public class Shark_Behaviour_Tree_Script : MonoBehaviour
 
     private void destroyDiver()
     {
-        // Get the current position of the target
-        Vector3 currentPosition = diver.transform.position;
-
-        // Teleport the target at a random position, so it looks like he's dead
+        // Teleport the diver at a random position, so it looks like he's dead
         Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
         diver.transform.position = newPosition;
-
     }
 
     private Node diverDestroy()
@@ -93,7 +87,7 @@ public class Shark_Behaviour_Tree_Script : MonoBehaviour
         transform.position = newPosition;
 
 
-        // Teleport mine at some random position, so it looks like mine has changed position
+        // Teleport mine at some random position, so it looks like mine has exploded and changed position
         Vector3 newMinePosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
         mine.transform.position = newMinePosition;
     }
@@ -115,17 +109,6 @@ public class Shark_Behaviour_Tree_Script : MonoBehaviour
         return new Action(() => seekMine());
     }
 
-    private Root Wander()
-    {
-        return new Root(
-        new Service(0.5f, UpdatePerception,
-            new Selector(
-               new BlackboardCondition("targetDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
-               nodeWander()),
-               new BlackboardCondition("targetDistance", Operator.IS_SMALLER, 20.0f, Stops.IMMEDIATE_RESTART,
-               diverSeek())
-               )));
-    }
     private void wanderFunction()
     {
         Vector3 accel = wander.GetSteering();

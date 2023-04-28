@@ -44,10 +44,9 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
 
     private void destroyTreasure()
     {
-        // Teleport at some random position, so it looks like mermaid is hiding the treasure
+        // Teleport the treasure at some random position, so it looks like mermaid is hiding the treasure
         Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
         treasure.transform.position = newPosition;
-
     }
 
     private Node treasureDestroy()
@@ -87,7 +86,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
         Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
         transform.position = newPosition;
 
-        // Teleport mine at some random position, so it looks like mine has changed position
+        // Teleport mine at some random position, so it looks like mine has exploded and changed position
         Vector3 newMinePosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.3f, UnityEngine.Random.Range(20f, 100f));
         mine.transform.position = newMinePosition;
     }
@@ -123,8 +122,6 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
                treasureDestroy()),
                new BlackboardCondition("treasureDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
                treasureSeek()),
-               //new BlackboardCondition("treasureDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
-               //nodeWander()),
                new BlackboardCondition("mineDistance", Operator.IS_SMALLER, 2.0f, Stops.IMMEDIATE_RESTART,
                mineDestroy()),
                new BlackboardCondition("mineDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
@@ -149,7 +146,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
         }
         else
         {
-            flee.enabled = false;
+            wanderFunction();
         }
     }
 

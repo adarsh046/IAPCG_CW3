@@ -73,8 +73,8 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
 
     private void fleeShark()
     {
-        float distanceToDiver = Vector3.Distance(transform.position, shark.position);
-        if (distanceToDiver <= flee.panicDist)
+        float distanceToShark = Vector3.Distance(transform.position, shark.position);
+        if (distanceToShark <= flee.panicDist)
         {
             Vector3 accel = flee.GetSteering(shark.position);
             steeringBasics.Steer(accel);
@@ -82,7 +82,7 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
         }
         else
         {
-            flee.enabled = false;
+            wanderFunction();
         }
     }
 
@@ -93,9 +93,17 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
 
     private void fleeMine()
     {
-        Vector3 accel = flee.GetSteering(mine.position);
-        steeringBasics.Steer(accel);
-        steeringBasics.LookWhereYoureGoing();
+        float distanceToMine = Vector3.Distance(transform.position, mine.position);
+        if (distanceToMine <= flee.panicDist)
+        {
+            Vector3 accel = flee.GetSteering(mine.position);
+            steeringBasics.Steer(accel);
+            steeringBasics.LookWhereYoureGoing();
+        }
+        else
+        {
+            wanderFunction();
+        }
     }
 
     private void destroyTreasure()

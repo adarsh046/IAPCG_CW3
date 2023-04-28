@@ -110,12 +110,10 @@ GameObject:
   - component: {fileID: 1438405057935079469}
   - component: {fileID: 1438405057935079472}
   - component: {fileID: 1438405057935079475}
-  - component: {fileID: 1438405057935079474}
   - component: {fileID: 1438405057935079477}
   - component: {fileID: 1438405057935079476}
   - component: {fileID: 1438405057935079479}
   - component: {fileID: 1438405057935079478}
-  - component: {fileID: 1438405057935079465}
   - component: {fileID: 1438405057935079473}
   m_Layer: 0
   m_Name: Diver
@@ -138,7 +136,7 @@ Transform:
   m_Children:
   - {fileID: 1438405056195877301}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1438405057935079472
 MeshFilter:
@@ -190,18 +188,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1438405057935079474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438405057935079468}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b8572e71e51be4ca109da6431a60b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &1438405057935079477
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -270,20 +256,6 @@ MonoBehaviour:
   timeToTarget: 0.1
   smoothing: 1
   numSamplesForSmoothing: 5
---- !u!114 &1438405057935079465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438405057935079468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb4d14358fa8a848b70df86d55c4b08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  behaviourNumber: 2
 --- !u!114 &1438405057935079473
 MonoBehaviour:
   m_ObjectHideFlags: 0
