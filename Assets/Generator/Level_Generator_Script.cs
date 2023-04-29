@@ -1,4 +1,5 @@
 // ECS7016P - Interactive Agents and Procedural Generation
+// Coursework: Unity Project (Undersea Explorers)
 // Adarsh Gupta - 220570653
 // References:
 // 1) Procedural Generation with Cellular Automata, Bronson Zgeb. Available at: https://bronsonzgeb.com/index.php/2022/01/30/procedural-generation-with-cellular-automata/
@@ -22,10 +23,11 @@ public class Level_Generator_Script : MonoBehaviour
 
     int[,] createLevel(int levelWidth, int levelHeight, int levelFillPercent)
     {
-        // Give random seed to generate different levels
+        // Random seed to generate different levels
         // Same seed = same level
-        string randomSeed = Time.time.ToString(); //Generate random seed
-        Random random = new Random(randomSeed.GetHashCode()); //Converting seed to a number
+        string randomSeed = Time.time.ToString();
+        //Converting seed to a number
+        Random random = new Random(randomSeed.GetHashCode());
 
         // Defining the level
         int[,] level = new int[levelWidth, levelHeight];
@@ -106,7 +108,7 @@ public class Level_Generator_Script : MonoBehaviour
                 }
             }
         }
-        // Now, returning the level with cellular automata
+        // Now, returning the level with cellular automata applied
         return level;
     }
 
@@ -120,9 +122,11 @@ public class Level_Generator_Script : MonoBehaviour
 
         // Level create
         level = createLevel(levelWidth, levelHeight, levelFillPercent);
+
         // Level cellular automata 
         level = cellularAutomata(level, smoothingIterations, cellularAutomataNumber, levelWidth, levelHeight);
-        // For every tile corrdinates, checking if it is cave tile
+
+        // For every tile coordinates, checking if it is cave tile
         for (int x = 0; x < levelWidth; ++x)
         {
             for (int y = 0; y < levelHeight; ++y)
