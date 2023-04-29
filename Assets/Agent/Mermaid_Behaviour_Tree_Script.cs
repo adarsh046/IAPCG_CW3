@@ -73,7 +73,6 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
         return new Action(() => destroyDiver());
     }
 
-
     private void destroyMine()
     {
         // Teleport mermaid at some random position, so it looks like she's dead
