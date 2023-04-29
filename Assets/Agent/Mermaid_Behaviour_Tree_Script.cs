@@ -120,7 +120,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
                new BlackboardCondition("mineDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
                Seek(mine)),
                new BlackboardCondition("mineDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
-               nodeWander())
+               Wander())
                )));
     }
 
@@ -153,7 +153,7 @@ public class Mermaid_Behaviour_Tree_Script : MonoBehaviour
         steeringBasics.LookWhereYoureGoing();
     }
 
-    private Node nodeWander()
+    private Node Wander()
     {
         return new Action(() => wanderFunction());
     }

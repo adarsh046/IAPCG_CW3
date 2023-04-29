@@ -62,6 +62,8 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
                Flee(shark)),
                new BlackboardCondition("mermaidDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
                Seek(mermaid)),
+               new BlackboardCondition("mineDistance", Operator.IS_SMALLER, 2.0f, Stops.IMMEDIATE_RESTART,
+               mineDestroy()),
                new BlackboardCondition("mineDistance", Operator.IS_SMALLER_OR_EQUAL, 15.0f, Stops.IMMEDIATE_RESTART,
                Flee(mine)),
                new BlackboardCondition("treasureDistance", Operator.IS_SMALLER, 2.0f, Stops.IMMEDIATE_RESTART,
@@ -69,8 +71,24 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
                new BlackboardCondition("treasureDistance", Operator.IS_SMALLER_OR_EQUAL, 20.0f, Stops.IMMEDIATE_RESTART,
                Seek(treasure)),
                new BlackboardCondition("treasureDistance", Operator.IS_GREATER, 20.0f, Stops.IMMEDIATE_RESTART,
-               nodeWander())
+               Wander())
                )));   
+    }
+
+    private void destroyMine()
+    {
+        // Teleport diver at some random position, so it looks like he's dead
+        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(10f, 55f), 0.0f, UnityEngine.Random.Range(20f, 100f));
+        transform.position = newPosition;
+
+        // Teleport mine at some random position, so it looks like mine has exploded and changed position
+        Vector3 newMinePosition = new Vector3(UnityEngine.Random.Range(10f, 55f), -0.2f, UnityEngine.Random.Range(20f, 100f));
+        mine.transform.position = newMinePosition;
+    }
+
+    private Node mineDestroy()
+    {
+        return new Action(() => destroyMine());
     }
 
     private Node Flee(Transform gameObject)
@@ -127,7 +145,7 @@ public class Diver_Behaviour_Tree_Script : MonoBehaviour
         steeringBasics.LookWhereYoureGoing();
     }
 
-    private Node nodeWander()
+    private Node Wander()
     {
         return new Action(() => wanderFunction());
     }

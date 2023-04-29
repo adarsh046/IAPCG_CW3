@@ -2,14 +2,15 @@
 // Adarsh Gupta - 220570653
 // References:
 // 1) Procedural Generation with Cellular Automata, Bronson Zgeb. Available at: https://bronsonzgeb.com/index.php/2022/01/30/procedural-generation-with-cellular-automata/
-// 2) Procedural cave generation, YouTube. Available at: https://www.youtube.com/watch?v=v7yyZZjF1z4&amp
+// 2) Procedural cave generation, Sebastian Lague. YoutTube. Available at: https://www.youtube.com/watch?v=v7yyZZjF1z4&amp
 // 3) Cellular automata method for generating random cave-like levels, RogueBasin. Available at: http://www.roguebasin.com/index.php/Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels 
-// 4) Constructive generation methods for dungeons and levels. Available at: https://qmplus.qmul.ac.uk/mod/resource/view.php?id=2201434
+// 4) Constructive generation methods for dungeons and levels, Noor Shaker, Antonios Liapis, Julian Togelius, Ricardo Lopes, and Rafael Bidarra. Available at: https://qmplus.qmul.ac.uk/mod/resource/view.php?id=2201434
+// 5) Cellular automata | procedural generation | game development tutorial, White Box Dev. YouTube. Available at: https://www.youtube.com/watch?v=slTEz6555Ts
 
 using UnityEngine;
 using Random = System.Random;
 
-public class Level_Generator : MonoBehaviour
+public class Level_Generator_Script : MonoBehaviour
 {
     int[,] level;
     public GameObject caveTiles;
